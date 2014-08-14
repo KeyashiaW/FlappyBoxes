@@ -45,8 +45,14 @@ var mainState = {
      this.pipes.createMultiple(20, 'pipe');
      
      //Add in pipes over 1.5 secs to the screen
-     this.timer = game.time.events.loop(1500, this.addRowOfPipes, this)
+     this.timer = game.time.events.loop(1500, this.addRowOfPipes, this);
      
+     this.score = 0;
+     
+     //Makes score visible
+     
+     this.labelScore = game.add.text (20, 20, "0", {font: "30 px Arial", fill: "#ffffff"});
+   
      //When spacebar is pressed, make the bird jump!
      var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
      spaceKey.onDown.add(this.jump, this); 
@@ -59,6 +65,7 @@ var mainState = {
        if (this.bird.inWorld == false){
          this.restartGame();
        }
+       game.physics.arcade.overlap(this.bird, this.pipes, this.restartGame, null, this);
     },
     
     
@@ -89,6 +96,8 @@ var mainState = {
      
    }
    }
+   this.score += 1;
+   this.labelScore.text = this.score;
  }, 
  
   jump: function (){
